@@ -1656,6 +1656,8 @@ void mario_update_hitbox_and_cap_model(struct MarioState *m) {
         bodyState->modelState &= ~0xFF;
         bodyState->modelState |= (0x100 | m->fadeWarpOpacity);
     }
+
+    gMarioState->marioObj->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
 }
 
 /**
