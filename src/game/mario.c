@@ -1777,6 +1777,12 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         func_sh_8025574C();
 #endif
 
+        gMarioState->particleFlags &=
+            ~(PARTICLE_DUST | PARTICLE_BUBBLE | PARTICLE_WATER_SPLASH | PARTICLE_PLUNGE_BUBBLE
+            | PARTICLE_WAVE_TRAIL | PARTICLE_DIRT | PARTICLE_SNOW | PARTICLE_TRIANGLE
+            | PARTICLE_IDLE_WATER_WAVE | PARTICLE_SHALLOW_WATER_WAVE
+            | PARTICLE_SHALLOW_WATER_SPLASH | PARTICLE_MIST_CIRCLE | PARTICLE_HORIZONTAL_STAR | PARTICLE_VERTICAL_STAR);
+
         return gMarioState->particleFlags;
     }
 
