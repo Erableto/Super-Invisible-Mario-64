@@ -167,8 +167,6 @@ void king_whomp_on_ground(void) {
             } else {
                 vec3f_copy_2(pos, &o->oPosX);
                 vec3f_copy_2(&o->oPosX, &gMarioObject->oPosX);
-                spawn_mist_particles_variable(0, 0, 100.0f);
-                spawn_triangle_break_particles(20, MODEL_DIRT_ANIMATION, 3.0f, 4);
                 cur_obj_shake_screen(SHAKE_POS_SMALL);
                 vec3f_copy_2(&o->oPosX, pos);
             }
@@ -243,7 +241,6 @@ void whomp_die(void) {
             cur_obj_hide();
             cur_obj_become_intangible();
             spawn_mist_particles_variable(0, 0, 200.0f);
-            spawn_triangle_break_particles(20, MODEL_DIRT_ANIMATION, 3.0f, 4);
             cur_obj_shake_screen(SHAKE_POS_SMALL);
             o->oPosY += 100.0f;
             spawn_default_star(180.0f, 3880.0f, 340.0f);
@@ -252,7 +249,6 @@ void whomp_die(void) {
         }
     } else {
         spawn_mist_particles_variable(0, 0, 100.0f);
-        spawn_triangle_break_particles(20, MODEL_DIRT_ANIMATION, 3.0f, 4);
         cur_obj_shake_screen(SHAKE_POS_SMALL);
         create_sound_spawner(SOUND_OBJ_THWOMP);
         obj_mark_for_deletion(o);
