@@ -520,6 +520,10 @@ else
   endif
 endif
 
+ifeq ($(VERSION),us)
+  $(BUILD_DIR)/src/game/print.o: $(addsuffix .rgba16.inc.c,$(addprefix $(BUILD_DIR)/textures/segment2/segment2.,02600 03400 03E00 04200 04600 04C00 04E00 05000 05200 05400 05E00 06000))
+endif
+
 $(BUILD_DIR)/src/usb/usb.o: OPT_FLAGS := -O0
 $(BUILD_DIR)/src/usb/usb.o: CFLAGS += -Wno-unused-variable -Wno-sign-compare -Wno-unused-function
 $(BUILD_DIR)/src/usb/debug.o: OPT_FLAGS := -O0
