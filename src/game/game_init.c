@@ -301,6 +301,16 @@ void create_gfx_task_structure(void) {
     gGfxSPTask->task.t.ucode_data = gspSuper3DDataStart;
     gGfxSPTask->task.t.ucode_size = ((u8 *) gspSuper3DTextEnd - (u8 *) gspSuper3DTextStart);
     gGfxSPTask->task.t.ucode_data_size = ((u8 *) gspSuper3DDataEnd - (u8 *) gspSuper3DDataStart);
+#elif   F3D_OLD
+    gGfxSPTask->task.t.ucode = gspFast3D_fifoTextStart;
+    gGfxSPTask->task.t.ucode_data = gspFast3D_fifoDataStart;
+    gGfxSPTask->task.t.ucode_size = ((u8 *) gspFast3D_fifoTextEnd - (u8 *) gspFast3D_fifoTextStart);
+    gGfxSPTask->task.t.ucode_data_size = ((u8 *) gspFast3D_fifoDataEnd - (u8 *) gspFast3D_fifoDataStart);
+#elif   F3D_NEW
+    gGfxSPTask->task.t.ucode = gspFast3D_fifoTextStart;
+    gGfxSPTask->task.t.ucode_data = gspFast3D_fifoDataStart;
+    gGfxSPTask->task.t.ucode_size = ((u8 *) gspFast3D_fifoTextEnd - (u8 *) gspFast3D_fifoTextStart);
+    gGfxSPTask->task.t.ucode_data_size = ((u8 *) gspFast3D_fifoDataEnd - (u8 *) gspFast3D_fifoDataStart);
 #else
     gGfxSPTask->task.t.ucode = gspFast3D_fifoTextStart;
     gGfxSPTask->task.t.ucode_data = gspFast3D_fifoDataStart;

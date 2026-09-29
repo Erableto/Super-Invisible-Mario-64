@@ -15,6 +15,10 @@ glabel rspbootTextEnd
 glabel gspSuper3D_fifoTextStart
         .incbin "lib/PR/super3d/fifo/Super3D.bin"
 glabel gspSuper3D_fifoTextEnd
+#elif F3D_OLD == 1 || F3D_NEW == 1
+glabel gspFast3D_fifoTextStart
+        .incbin "lib/PR/f3d_old/fifo/F3D_old.bin"
+glabel gspFast3D_fifoTextEnd
 #endif
 
 #else /* Use one of the Fast3DEX series grucodes. */
@@ -167,6 +171,10 @@ glabel gspS2DEX2_fifoTextEnd
 glabel gspSuper3D_fifoDataStart
     .incbin "lib/PR/super3d/fifo/Super3D_data.bin"
 glabel gspSuper3D_fifoDataEnd
+    #elif F3D_OLD == 1 || F3D_NEW == 1
+glabel gspFast3D_fifoDataStart
+    .incbin "lib/PR/f3d_old/fifo/F3D_old_data.bin"
+glabel gspFast3D_fifoDataEnd
 #endif
 
 #else /* Using one of the Fast3DEX series grucodes */

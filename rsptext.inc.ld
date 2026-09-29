@@ -1,6 +1,8 @@
 #ifndef F3DEX_GBI_SHARED
 #if SUPER3D_GBI == 1
       lib/PR/super3d/fifo/gspSuper3D.o(.text);
+#elif F3D_OLD == 1 || F3D_NEW == 1
+      BUILD_DIR/lib/gspFast3D.fifo.o(.text);
 #endif
 #else /* Use one of the Fast3DEX series grucodes. */
     #ifndef F3DZEX_GBI_2
