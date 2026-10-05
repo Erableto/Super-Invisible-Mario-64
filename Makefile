@@ -85,19 +85,35 @@ else ifeq ($(VERSION),sh)
   DEFINES += VERSION_SH=1
 endif
 
-TARGET := sm64
+TARGET := sm64.$(VERSION)
 
 
 # GRUCODE - selects which RSP microcode to use.
+#   f3d_old - classic Fast3D microcode used by original JP/US builds
+#   f3d_new - classic Fast3D microcode used by original EU/SH builds
 #   f3dex   -
 #   f3dex2  -
 #   l3dex2  - F3DEX2 version that only renders in wireframe
 #   f3dzex  - newer, experimental microcode used in Animal Crossing
 #   super3d - extremely experimental version of Fast3D lacking many features for speed
-GRUCODE ?= f3dzex
-$(eval $(call validate-option,GRUCODE,f3dex f3dex2 f3dex2pl f3dzex super3d l3dex2))
+ifeq ($(VERSION),jp)
+  GRUCODE ?= f3d_old
+else ifeq ($(VERSION),us)
+  GRUCODE ?= f3d_old
+else ifeq ($(VERSION),eu)
+  GRUCODE ?= f3d_new
+else ifeq ($(VERSION),sh)
+  GRUCODE ?= f3d_new
+else
+  GRUCODE ?= f3d_new
+endif
+$(eval $(call validate-option,GRUCODE,f3d_old f3d_new f3dex f3dex2 f3dex2pl l3dex2 f3dzex super3d))
 
-ifeq ($(GRUCODE),f3dex) # Fast3DEX
+ifeq ($(GRUCODE),f3d_old)
+  DEFINES += F3D_OLD=1
+else ifeq ($(GRUCODE),f3d_new) # Fast3D 2.0H
+  DEFINES += F3D_NEW=1
+else ifeq ($(GRUCODE),f3dex) # Fast3DEX
   DEFINES += F3DEX_GBI=1 F3DEX_GBI_SHARED=1
 else ifeq ($(GRUCODE),f3dex2) # Fast3DEX2
   DEFINES += F3DEX_GBI_2=1 F3DEX_GBI_SHARED=1
@@ -123,6 +139,10 @@ else ifeq ($(COMPILER),clang)
   OPT_FLAGS    := -O2
 endif
 
+ifneq ($(filter jp us,$(VERSION)),)
+  OPT_FLAGS := -g
+endif
+
 
 # NON_MATCHING - whether to build a matching, identical copy of the ROM
 #   1 - enable some alternate, more portable code that does not produce a matching ROM
@@ -139,7 +159,7 @@ ifeq ($(NON_MATCHING),1)
 endif
 
 
-TARGET_STRING := sm64
+TARGET_STRING := sm64.$(VERSION).$(GRUCODE)
 
 # UNF - whether to use UNFLoader flashcart library
 #   1 - includes code in ROM
@@ -518,6 +538,10 @@ else
     # non-EU encoded text inserted into segment 0x02
     $(BUILD_DIR)/bin/segment2.o: $(BUILD_DIR)/text/$(VERSION)/define_text.inc.c
   endif
+endif
+
+ifeq ($(VERSION),us)
+  $(BUILD_DIR)/src/game/print.o: $(addsuffix .rgba16.inc.c,$(addprefix $(BUILD_DIR)/textures/segment2/segment2.,02600 03400 03E00 04200 04600 04C00 04E00 05000 05200 05400 05E00 06000))
 endif
 
 $(BUILD_DIR)/src/usb/usb.o: OPT_FLAGS := -O0

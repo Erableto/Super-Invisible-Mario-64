@@ -18,3 +18,4 @@ DPC_STATUS_START_VALID equ 0x0400
 
 // RDP Status write flags
 DPC_STATUS_CLR_XBUS    equ 0x0001
+

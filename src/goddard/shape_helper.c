@@ -29,6 +29,10 @@ struct ObjShape *gShapeSilverSpark = NULL;    // @ 801A82F0
 struct ObjShape *gShapeRedStar = NULL;     // @ 801A82F4
 struct ObjShape *gShapeSilverStar = NULL;  // @ 801A82F8
 
+static void hide_mario_face_object(void *object) {
+    ((struct GdObj *) object)->drawFlags |= OBJ_INVISIBLE;
+}
+
 // Not sure what this data is, but it looks like stub animation data
 
 static struct GdAnimTransform unusedAnimData1[] = {
@@ -1303,6 +1307,8 @@ s32 load_mario_head(void (*aniFn)(struct ObjAnimator *)) {
     d_use_integer_names(FALSE);
     // FIXME: make segment address work once seg4 is disassembled
     gMarioFaceGrp = (struct ObjGroup *) load_dynlist(dynlist_mario_master);
+    gMarioFaceGrp->header.drawFlags |= OBJ_INVISIBLE;
+    apply_to_obj_types_in_group(OBJ_TYPE_ALL, hide_mario_face_object, gMarioFaceGrp);
     stop_memtracker("mario face");
 
     // Make camera

@@ -5,6 +5,7 @@
 #include "memory.h"
 #include "print.h"
 #include "segment2.h"
+#include "types.h"
 
 /**
  * This file handles printing and formatting the colorful text that
@@ -17,6 +18,45 @@ struct TextLabel {
     s16 length;
     char buffer[50];
 };
+
+#ifdef VERSION_US
+ALIGNED8 static const Texture sJapaneseHudGlyphJ[] = {
+#include "textures/segment2/segment2.02600.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphQ[] = {
+#include "textures/segment2/segment2.03400.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphV[] = {
+#include "textures/segment2/segment2.03E00.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphX[] = {
+#include "textures/segment2/segment2.04200.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphZ[] = {
+#include "textures/segment2/segment2.04600.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphExclamation[] = {
+#include "textures/segment2/segment2.04C00.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphDoubleExclamation[] = {
+#include "textures/segment2/segment2.04E00.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphQuestion[] = {
+#include "textures/segment2/segment2.05000.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphAmpersand[] = {
+#include "textures/segment2/segment2.05200.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphPercent[] = {
+#include "textures/segment2/segment2.05400.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphCircle[] = {
+#include "textures/segment2/segment2.05E00.rgba16.inc.c"
+};
+ALIGNED8 static const Texture sJapaneseHudGlyphKey[] = {
+#include "textures/segment2/segment2.06000.rgba16.inc.c"
+};
+#endif
 
 /**
  * Stores the text to be rendered on screen
@@ -350,6 +390,32 @@ s8 char_to_glyph_index(char c) {
  */
 void add_glyph_texture(s8 glyphIndex) {
     const u8 *const *glyphs = segmented_to_virtual(main_hud_lut);
+    const Texture *glyphTexture = NULL;
+
+#ifdef VERSION_US
+    switch (glyphIndex) {
+        case 19: glyphTexture = sJapaneseHudGlyphJ; break;
+        case 26: glyphTexture = sJapaneseHudGlyphQ; break;
+        case 31: glyphTexture = sJapaneseHudGlyphV; break;
+        case 33: glyphTexture = sJapaneseHudGlyphX; break;
+        case 35: glyphTexture = sJapaneseHudGlyphZ; break;
+        case GLYPH_EXCLAMATION_PNT: glyphTexture = sJapaneseHudGlyphExclamation; break;
+        case GLYPH_TWO_EXCLAMATION: glyphTexture = sJapaneseHudGlyphDoubleExclamation; break;
+        case GLYPH_QUESTION_MARK: glyphTexture = sJapaneseHudGlyphQuestion; break;
+        case GLYPH_AMPERSAND: glyphTexture = sJapaneseHudGlyphAmpersand; break;
+        case GLYPH_PERCENT: glyphTexture = sJapaneseHudGlyphPercent; break;
+        case GLYPH_PERIOD: glyphTexture = sJapaneseHudGlyphCircle; break;
+        case GLYPH_BETA_KEY: glyphTexture = sJapaneseHudGlyphKey; break;
+    }
+
+    if (glyphTexture != NULL) {
+        gDPPipeSync(gDisplayListHead++);
+        gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1,
+                           VIRTUAL_TO_PHYSICAL(glyphTexture));
+        gSPDisplayList(gDisplayListHead++, dl_hud_img_load_tex_block);
+        return;
+    }
+#endif
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, glyphs[glyphIndex]);

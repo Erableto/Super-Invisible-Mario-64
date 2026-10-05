@@ -1656,6 +1656,8 @@ void mario_update_hitbox_and_cap_model(struct MarioState *m) {
         bodyState->modelState &= ~0xFF;
         bodyState->modelState |= (0x100 | m->fadeWarpOpacity);
     }
+
+    gMarioState->marioObj->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
 }
 
 /**
@@ -1774,6 +1776,13 @@ s32 execute_mario_action(UNUSED struct Object *o) {
 #if ENABLE_RUMBLE
         func_sh_8025574C();
 #endif
+
+        gMarioState->particleFlags &=
+            ~(PARTICLE_DUST | PARTICLE_BUBBLE | PARTICLE_WATER_SPLASH | PARTICLE_PLUNGE_BUBBLE
+            | PARTICLE_WAVE_TRAIL | PARTICLE_DIRT | PARTICLE_SNOW | PARTICLE_TRIANGLE
+            | PARTICLE_IDLE_WATER_WAVE | PARTICLE_SHALLOW_WATER_WAVE
+            | PARTICLE_SHALLOW_WATER_SPLASH | PARTICLE_MIST_CIRCLE | PARTICLE_HORIZONTAL_STAR
+            | PARTICLE_VERTICAL_STAR | PARTICLE_FIRE);
 
         return gMarioState->particleFlags;
     }
